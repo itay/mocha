@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 
+var cover = require('cover');
 var program = require('commander')
   , exec = require('child_process').exec
   , path = require('path')
@@ -57,6 +58,7 @@ program
   .option('--ignore-leaks', 'ignore global variable leaks')
   .option('--interfaces', 'display available interfaces')
   .option('--reporters', 'display available reporters')
+  .option('--coverage <reporter>', 'collect code coverage information')
 
 program.name = 'mocha';
 
@@ -223,8 +225,11 @@ if (program.watch) {
   return;
 }
 
-// load
+if (program.coverage) {
+  cover.hookAndReport(program.coverage);
+}
 
+// load
 load(files, function(){
   run(suite, process.exit);
 });
